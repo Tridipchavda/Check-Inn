@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 🏨 Check-Inn — Hotel Booking System
 
-First, run the development server:
+Check-Inn is a full-stack hotel booking platform built with **Next.js**, **GraphQL**, and **PostgreSQL**. It allows users to browse hotels, book rooms, and manage their bookings. Admins can manage hotels, rooms, availability, and approve pending bookings.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Features
+
+### ✅ User-Facing Functionality
+
+- 🔍 **Hotel Search**  
+  Users can search hotels by city and date, view hotel details, and check room availability.
+
+- 🛏️ **Room Booking**  
+  - Select available rooms
+  - Input guest count and booking dates
+  - Real-time cost summary
+  - Book room directly with guest info
+
+- ✍️ **Hotel Reviews**  
+  Users can leave reviews with ratings and comments.
+
+- 📆 **My Bookings Page**  
+  - View all bookings with hotel info
+  - Status indicators (`CONFIRMED`, `PENDING`, `CANCELLED`)
+  - Cancel `PENDING` bookings
+  - Responsive and consistent card UI
+
+---
+
+### 🛠️ Admin Functionality
+
+- 📋 **Admin Dashboard**  
+  View all bookings across all hotels with status tags.
+
+- ✅ **Booking Approval**  
+  - Approve `PENDING` bookings with a click
+  - Real-time status updates
+  - Displays hotel name and room type
+
+- 🧠 **Smart Search**  
+  - Search across hotel name, room type, or room number
+  - Debounced 1-second live filtering (like PostgreSQL `ILIKE`)
+  - Case-insensitive and partial match
+
+---
+
+## 🧪 Tech Stack
+
+- **Frontend:** Next.js (App Router), Tailwind CSS, Lucide Icons  
+- **Backend:** GraphQL API with raw SQL (`pg`), custom resolvers  
+- **Database:** PostgreSQL  
+- **Validation:** Zod schemas  
+- **State Management:** React `useState` / `useEffect`
+
+---
+
+## 🔐 Auth & API
+
+- JWT-based authentication
+- `axiosClient` handles authorized GraphQL requests with `token`
+- Admin and user role-based logic split into separate views
+
+---
+
+## 📂 Directory Structure (Simplified)
+
+```
+/src
+  /app
+    /book        → Page Preview for booking calculation
+    /admin       → Admin dashboard + booking approvals
+    /hotels      → Hotel detail & reviews
+    /login       → Login for both admin and user
+    /signup      → Signup Page
+    /my-bookings → Show Bookings Info
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧰 Dev Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Install dependencies
+npm install
 
-## Learn More
+# Run local dev server
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+> Make sure your `.env` includes DB and API credentials. According to `.env.sample`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📄 License
 
-## Deploy on Vercel
+MIT — Feel free to fork, contribute, and build your own hotel booking engine.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
