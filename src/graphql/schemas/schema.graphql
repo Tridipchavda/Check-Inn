@@ -1,0 +1,167 @@
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+scalar DateTime
+
+type Booking {
+  id: ID!
+  user: User!
+  room: Room!
+  checkIn: DateTime!
+  checkOut: DateTime!
+  guests: Int!
+  status: BookingStatus!
+  createdAt: DateTime!
+}
+
+type Hotel {
+  id: ID!
+  name: String!
+  location: String!
+  description: String
+  amenities: [String!]!
+  rating: Float
+  images: [String!]!
+  rooms: [Room!]!
+  reviews: [Review!]!
+}
+
+type Review {
+  id: ID!
+  user: User!
+  hotel: Hotel!
+  rating: Int!
+  comment: String
+  createdAt: DateTime!
+}
+
+type Availability {
+  date: String!
+  isAvailable: Boolean!
+}
+
+type Room {
+  id: ID!
+  hotel: Hotel!
+  type: String!
+  price: Float!
+  capacity: Int!
+  roomNumber: String
+  availability: [Availability!]!
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  STAFF
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  role: Role!
+  bookings: [Booking!]!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+
+input RegisterInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input BookRoomInput {
+  roomId: ID!
+  checkIn: DateTime!
+  checkOut: DateTime!
+  guests: Int!
+}
+
+input ReviewInput {
+  hotelId: ID!
+  rating: Int!
+  comment: String
+}
+
+input AddHotelInput {
+  name: String!
+  location: String!
+  description: String
+  amenities: [String!]!
+  images: [String!]!
+}
+
+input UpdateRoomInput {
+  price: Float
+  capacity: Int
+  roomNumber: String
+  type: String
+  hotelId: ID
+}
+
+input AddRoomInput {
+  hotelId: ID!
+  capacity: Int!
+  price: Float!
+  roomNumber: String
+  type: String
+}
+
+input HotelFilterInput {
+  location: String
+  minPrice: Float
+  maxPrice: Float
+  amenities: [String!]
+  minRating: Float
+  availableFrom: String
+  availableTo: String
+}
+
+input SetAvailabilityInput {
+  roomId: ID!
+  date: String!
+  isAvailable: Boolean!
+}
+
+
+type Query {
+  me(id: ID, name: String, email: String): User
+  users: [User!]! # Admin only
+  hotels(filter: HotelFilterInput): [Hotel!]!
+  hotel(id: ID!): Hotel
+  rooms(hotelId: ID): [Room!]!
+  bookings: [Booking!]! # Customer or Admin access
+}
+
+type Mutation {
+  register(input: RegisterInput!): AuthPayload
+  login(input: LoginInput!): AuthPayload
+
+  bookRoom(input: BookRoomInput!): Booking!
+  approveBooking(id: ID!): Booking!
+  cancelBooking(id: ID!): Booking!
+  leaveReview(input: ReviewInput!): Review!
+
+  # Admin-only
+  addHotel(input: AddHotelInput!): Hotel!
+  updateHotel(id: ID!, input: AddHotelInput!): Hotel!
+  updateRoom(id: ID!, input: UpdateRoomInput!): Room!
+  addRoom(input: AddRoomInput!): Room!
+  deleteHotel(id: ID!): Boolean
+  setRoomAvailability(input: SetAvailabilityInput!): Availability!
+}
